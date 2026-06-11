@@ -17,7 +17,7 @@ function Section({ title, items, color }) {
 
 function SWOTCard({ swot }) {
   return (
-    <div className="bg-gray-900 rounded-xl p-6">
+    <div className="bg-gray-900 rounded-xl p-6 text-left">
       <h2 className="text-xl font-semibold mb-4">SWOT Analysis</h2>
       <div className="grid grid-cols-2 gap-4">
         <Section title="💪 Strengths" items={swot.strengths} color="border-green-500" />

@@ -53,7 +53,7 @@ function App() {
       )}
 
       {data && (
-  <div id="dashboard" className="mt-8">
+  <div id="dashboard" className="mt-8 text-left">
     <h2 className="text-2xl font-bold text-center mb-6">{company} — Intelligence Report</h2>
     <div className="mb-6"><ExportButton company={company} /></div>
     <div className="mb-6"><SentimentChart data={data.sentimentChart} /></div>

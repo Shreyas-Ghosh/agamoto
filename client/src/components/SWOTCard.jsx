@@ -1,13 +1,13 @@
 function Section({ title, items, color }) {
   return (
-    <div className={`bg-gray-800 rounded-lg p-4 border-t-4 ${color}`}>
+    <div className={`bg-gray-800 rounded-lg p-4 border-t-4 ${color} text-left`}>
       <h3 className="font-bold text-lg mb-2">{title}</h3>
       {items.length === 0 ? (
         <p className="text-gray-400 text-sm">No data</p>
       ) : (
         <ul className="space-y-1">
           {items.map((item, i) => (
-            <li key={i} className="text-sm text-gray-300 list-disc ml-4">{item}</li>
+            <li key={i} className="text-sm text-gray-300 list-disc ml-4 text-left">{item}</li>
           ))}
         </ul>
       )}

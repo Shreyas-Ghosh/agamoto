@@ -16,6 +16,7 @@ function Section({ title, items, color }) {
 }
 
 function SWOTCard({ swot }) {
+  if (!swot) return null;
   return (
     <div className="bg-gray-900 rounded-xl p-6 text-left">
       <h2 className="text-xl font-semibold mb-4">SWOT Analysis</h2>

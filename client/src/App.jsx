@@ -57,10 +57,10 @@ function App() {
     <h2 className="text-2xl font-bold text-center mb-6">{company} — Intelligence Report</h2>
     <div className="mb-6"><ExportButton company={company} /></div>
     <div className="mb-6"><SentimentChart data={data.sentimentChart} /></div>
-    <div className="grid grid-cols-2 gap-6">
+    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px'}}>
       <SWOTCard swot={data.swot} />
       <EventTimeline signals={data.signals} />
-    </div>
+</div>
   </div>
 )}
     </div>

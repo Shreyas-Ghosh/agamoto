@@ -7,7 +7,7 @@ function Section({ title, items, color }) {
       ) : (
         <ul className="space-y-1">
           {items.map((item, i) => (
-            <li key={i} className="text-sm text-gray-300">• {item}</li>
+            <li key={i} className="text-sm text-gray-300 list-disc ml-4">{item}</li>
           ))}
         </ul>
       )}

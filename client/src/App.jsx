@@ -31,15 +31,31 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        Competitive Intelligence Dashboard
-      </h1>
+  <div className="min-h-screen bg-gray-950 text-white">
+    {/* Navbar */}
+    <header className="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+      <div>
+        <span className="text-xl font-bold text-white">Agamoto</span>
+        <span className="ml-3 text-sm text-gray-400">Competitive Intelligence, Instantly</span>
+      </div>
+    </header>
+
+    <div className="p-6">
       <SearchBar onSearch={handleSearch} loading={loading} />
       {error && <p className="text-red-400 text-center mt-4">{error}</p>}
-      {loading && <p className="text-center text-gray-400 mt-10">Analyzing {company}... this may take 20-30 seconds</p>}
+
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex flex-col items-center mt-16 gap-4">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-400">Analyzing {company}... this may take 20-30 seconds</p>
+        </div>
+      )}
+
       {data && (
         <div id="dashboard" className="mt-8 space-y-8">
+          {/* Company name heading */}
+          <h2 className="text-2xl font-bold text-center">{company} — Intelligence Report</h2>
           <ExportButton company={company} />
           <SentimentChart data={data.sentimentChart} />
           <SWOTCard swot={data.swot} />
@@ -47,7 +63,8 @@ function App() {
         </div>
       )}
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

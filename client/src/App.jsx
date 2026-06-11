@@ -53,16 +53,16 @@ function App() {
       )}
 
       {data && (
-  <div id="dashboard" className="mt-8 space-y-8">
-    <h2 className="text-2xl font-bold text-center">{company} — Intelligence Report</h2>
-    <ExportButton company={company} />
-    <SentimentChart data={data.sentimentChart} />
+  <div id="dashboard" className="mt-8">
+    <h2 className="text-2xl font-bold text-center mb-6">{company} — Intelligence Report</h2>
+    <div className="mb-6"><ExportButton company={company} /></div>
+    <div className="mb-6"><SentimentChart data={data.sentimentChart} /></div>
     <div className="grid grid-cols-2 gap-6">
       <SWOTCard swot={data.swot} />
       <EventTimeline signals={data.signals} />
     </div>
   </div>
-   )}
+)}
     </div>
   </div>
   );

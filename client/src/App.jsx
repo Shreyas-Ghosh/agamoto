@@ -53,18 +53,19 @@ function App() {
       )}
 
       {data && (
-        <div id="dashboard" className="mt-8 space-y-8">
-          {/* Company name heading */}
-          <h2 className="text-2xl font-bold text-center">{company} — Intelligence Report</h2>
-          <ExportButton company={company} />
-          <SentimentChart data={data.sentimentChart} />
-          <SWOTCard swot={data.swot} />
-          <EventTimeline signals={data.signals} />
-        </div>
-      )}
+  <div id="dashboard" className="mt-8 space-y-8">
+    <h2 className="text-2xl font-bold text-center">{company} — Intelligence Report</h2>
+    <ExportButton company={company} />
+    <SentimentChart data={data.sentimentChart} />
+    <div className="grid grid-cols-2 gap-6">
+      <SWOTCard swot={data.swot} />
+      <EventTimeline signals={data.signals} />
     </div>
   </div>
-);
+   )}
+    </div>
+  </div>
+  );
 }
 
 export default App;

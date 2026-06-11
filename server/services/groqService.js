@@ -1,3 +1,4 @@
+import Groq from 'groq-sdk';
 const prompt = (text, language) => `
 You are a competitive intelligence analyst. Given the following news article,
 extract structured data and return ONLY valid JSON with no explanation.

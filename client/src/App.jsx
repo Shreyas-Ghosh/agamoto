@@ -44,7 +44,7 @@ function App() {
     <div className="p-6">
       <SearchBar onSearch={handleSearch} loading={loading} />
       <div className="flex justify-center gap-3 mt-3">
-  {[['en', '🇬🇧 English'], ['hi', '🇮🇳 Hindi'], ['te', '🇮🇳 Telugu']].map(([code, label]) => (
+  {[['en', 'English'], ['hi', 'Hindi'], ['te', 'Telugu']].map(([code, label]) => (
     <button
       key={code}
       onClick={() => setLanguage(code)}

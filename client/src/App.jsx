@@ -10,6 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [company, setCompany] = useState('');
+  const [language, setLanguage] = useState('en');
 
   const handleSearch = async (companyName) => {
     setLoading(true);
@@ -19,7 +20,7 @@ function App() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company: companyName }),
+        body: JSON.stringify({ company: companyName, language }),
       });
       const json = await res.json();
       setData(json);
@@ -42,6 +43,17 @@ function App() {
 
     <div className="p-6">
       <SearchBar onSearch={handleSearch} loading={loading} />
+      <div className="flex justify-center gap-3 mt-3">
+  {[['en', '🇬🇧 English'], ['hi', '🇮🇳 Hindi'], ['te', '🇮🇳 Telugu']].map(([code, label]) => (
+    <button
+      key={code}
+      onClick={() => setLanguage(code)}
+      className={`px-4 py-1 rounded-full text-sm ${language === code ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300'}`}
+    >
+      {label}
+    </button>
+  ))}
+</div>
       {error && <p className="text-red-400 text-center mt-4">{error}</p>}
 
       {/* Loading spinner */}

@@ -16,7 +16,7 @@ function App() {
     setError(null);
     setCompany(companyName);
     try {
-      const res = await fetch('http://localhost:3001/api/analyze', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ company: companyName }),

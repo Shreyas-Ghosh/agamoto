@@ -9,7 +9,10 @@ function ExportButton({ company }) {
   const handleExport = async () => {
     const element = document.getElementById('dashboard');
     if (!element) return;
-    const canvas = await html2canvas(element, { scale: 2 });
+    const canvas = await html2canvas(element, { 
+      scale: 2, 
+      backgroundColor: '#0a0514' 
+    });
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();

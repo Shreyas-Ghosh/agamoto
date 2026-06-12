@@ -1,27 +1,33 @@
 import Groq from 'groq-sdk';
 import axios from 'axios';
 
-const prompt = (text) => `
+const prompt = (text, language) => {
+  const targetLang = language === 'hi' ? 'Hindi' : language === 'te' ? 'Telugu' : 'English';
+  return `
 You are a competitive intelligence analyst. Given the following news article,
 extract structured data and return ONLY valid JSON with no explanation.
 {
   "sentiment": 0.0,
   "category": "product launch",
-  "key_signals": ["signal 1", "signal 2"],
+  "key_signals": ["signal 1 in ${targetLang}", "signal 2 in ${targetLang}"],
   "swot": {
-    "strength": null,
-    "weakness": null,
-    "opportunity": null,
-    "threat": null
+    "strength": "text in ${targetLang} or null",
+    "weakness": "text in ${targetLang} or null",
+    "opportunity": "text in ${targetLang} or null",
+    "threat": "text in ${targetLang} or null"
   },
-  "summary": "one sentence summary"
+  "summary": "one sentence summary in ${targetLang}"
 }
-sentiment is a float from -1.0 (very negative) to 1.0 (very positive).
-category is one of: "product launch" | "funding" | "partnership" | "regulatory" | "executive" | "other"
-key_signals are 2-3 strategic takeaways, max 10 words each.
+IMPORTANT RULES:
+1. The JSON keys MUST remain in English.
+2. The JSON values for 'key_signals', 'swot' fields, and 'summary' MUST be written entirely in ${targetLang}.
+3. 'sentiment' is a float from -1.0 (very negative) to 1.0 (very positive).
+4. 'category' MUST be one of these exact English strings: "product launch" | "funding" | "partnership" | "regulatory" | "executive" | "other"
+
 Article:
 ${text}
 `;
+};
 
 const systemMessage = (language) => {
   if (language === 'hi') return 'You MUST respond entirely in Hindi. Every text field in the JSON must be written in Hindi script. Do not use English in any field.';
@@ -39,7 +45,7 @@ export async function extractSignals(articles, language = 'en', provider = 'groq
           model: 'llama3.2',
           messages: [
             { role: 'system', content: systemMessage(language) },
-            { role: 'user', content: prompt(article.bodyText) }
+            { role: 'user', content: prompt(article.bodyText, language) }
           ],
           stream: false,
           format: 'json'
@@ -51,7 +57,7 @@ export async function extractSignals(articles, language = 'en', provider = 'groq
           model: 'llama-3.3-70b-versatile',
           messages: [
             { role: 'system', content: systemMessage(language) },
-            { role: 'user', content: prompt(article.bodyText) }
+            { role: 'user', content: prompt(article.bodyText, language) }
           ],
           response_format: { type: 'json_object' },
         });

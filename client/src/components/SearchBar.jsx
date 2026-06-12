@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
+
 function SearchBar({ onSearch, loading }) {
   const { t } = useTranslation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const value = e.target.company.value.trim();
@@ -8,20 +10,47 @@ function SearchBar({ onSearch, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3 max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0', maxWidth: '600px' }}>
       <input
         name="company"
         type="text"
         placeholder={t('searchPlaceholder')}
-        className="flex-1 px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
         disabled={loading}
+        style={{
+          flex: 1,
+          padding: '14px 0',
+          background: 'transparent',
+          border: 'none',
+          borderBottom: '1px solid #444',
+          color: '#fff',
+          fontSize: '18px',
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: 'italic',
+          outline: 'none',
+          caretColor: '#fff',
+        }}
+        onFocus={e => e.target.style.borderBottomColor = '#fff'}
+        onBlur={e => e.target.style.borderBottomColor = '#444'}
       />
       <button
         type="submit"
         disabled={loading}
-        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg font-semibold"
+        style={{
+          padding: '14px 0 14px 24px',
+          background: 'transparent',
+          border: 'none',
+          borderBottom: '1px solid #444',
+          color: loading ? '#444' : '#fff',
+          fontSize: '12px',
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 500,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          whiteSpace: 'nowrap',
+        }}
       >
-        {loading ? t('analyzing', { company: '...' }) : t('searchButton')}
+        {loading ? '...' : t('searchButton')}
       </button>
     </form>
   );

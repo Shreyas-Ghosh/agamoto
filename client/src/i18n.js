@@ -23,6 +23,7 @@ const resources = {
       sentimentNegative: 'Negative',
       sentimentNeutral:  'Neutral',
       searchButton: 'Search',
+      aiProvider: 'AI Provider',
     }
   },
   hi: {
@@ -46,6 +47,7 @@ const resources = {
       sentimentNegative: 'नकारात्मक',
       sentimentNeutral:  'तटस्थ',
       searchButton: 'खोजें',
+      aiProvider: 'AI प्रदाता',
     }
   },
   te: {
@@ -69,6 +71,7 @@ const resources = {
       sentimentNegative: 'ప్రతికూల',
       sentimentNeutral:  'తటస్థ',
       searchButton: 'శోధించు',
+      aiProvider: 'AI ప్రొవైడర్',
     }
   }
 };

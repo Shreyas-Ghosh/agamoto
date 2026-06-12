@@ -1,4 +1,5 @@
 import Groq from 'groq-sdk';
+import axios from 'axios';
 
 const prompt = (text) => `
 You are a competitive intelligence analyst. Given the following news article,
@@ -28,21 +29,39 @@ const systemMessage = (language) => {
   return 'Respond in English.';
 };
 
-export async function extractSignals(articles, language = 'en') {
-  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+export async function extractSignals(articles, language = 'en', provider = 'groq') {
   const results = await Promise.all(articles.map(async (article) => {
     try {
-      const completion = await groq.chat.completions.create({
-        model: 'llama-3.3-70b-versatile',
-        messages: [
-          { role: 'system', content: systemMessage(language) },
-          { role: 'user', content: prompt(article.bodyText) }
-        ],
-        response_format: { type: 'json_object' },
-      });
-      const parsed = JSON.parse(completion.choices[0].message.content);
+      let content = '';
+
+      if (provider === 'ollama') {
+        const res = await axios.post('http://localhost:11434/api/chat', {
+          model: 'llama3.2',
+          messages: [
+            { role: 'system', content: systemMessage(language) },
+            { role: 'user', content: prompt(article.bodyText) }
+          ],
+          stream: false,
+          format: 'json'
+        });
+        content = res.data.message.content;
+      } else {
+        const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+        const completion = await groq.chat.completions.create({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: systemMessage(language) },
+            { role: 'user', content: prompt(article.bodyText) }
+          ],
+          response_format: { type: 'json_object' },
+        });
+        content = completion.choices[0].message.content;
+      }
+
+      const parsed = JSON.parse(content);
       return { ...parsed, title: article.title, url: article.url, date: article.date };
-    } catch {
+    } catch (err) {
+      console.error(`AI extraction failed for provider ${provider}:`, err.message);
       return null;
     }
   }));

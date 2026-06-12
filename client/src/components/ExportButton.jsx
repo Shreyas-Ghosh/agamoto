@@ -1,55 +1,25 @@
-import { useTranslation } from 'react-i18next';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-
-function ExportButton({ company }) {
-  const { t } = useTranslation();
-  const handleExport = async () => {
-    const dashboard = document.getElementById('dashboard');
-    
-    const canvas = await html2canvas(dashboard, {
-      backgroundColor: '#030712',
-      scrollY: -window.scrollY,
-      windowWidth: document.documentElement.scrollWidth,
-      windowHeight: document.documentElement.scrollHeight,
-      height: dashboard.scrollHeight,
-      useCORS: true,
-    });
-
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-    
-    let position = 0;
-    let heightLeft = imgHeight;
-
-    // Add first page
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    // Add extra pages if content overflows
-    while (heightLeft > 0) {
-      position -= pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdfHeight;
-    }
-
-    pdf.save(`${company}-intelligence-report.pdf`);
-  };
-
-  return (
-    <div className="flex justify-end">
-      <button
-        onClick={handleExport}
-        className="px-5 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-semibold"
-      >
-        {t('exportButton')}
-      </button>
-    </div>
-  );
-}
-
-export default ExportButton;
+// keep all the existing import and handleExport logic unchanged, just replace the return:
+return (
+  <div>
+    <button
+      onClick={handleExport}
+      style={{
+        padding: '10px 24px',
+        background: 'transparent',
+        border: '1px solid #444',
+        color: '#888',
+        fontSize: '11px',
+        fontFamily: "'Inter', sans-serif",
+        fontWeight: 500,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+      }}
+      onMouseEnter={e => { e.target.style.borderColor = '#fff'; e.target.style.color = '#fff'; }}
+      onMouseLeave={e => { e.target.style.borderColor = '#444'; e.target.style.color = '#888'; }}
+    >
+      {t('exportButton')}
+    </button>
+  </div>
+);

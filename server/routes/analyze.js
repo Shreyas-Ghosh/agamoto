@@ -6,11 +6,11 @@ const router = express.Router();
 
 router.post('/analyze', async (req, res) => {
   try {
-    const { company } = req.body;
+    const { company, language = 'en', provider = 'groq' } = req.body;
     if (!company) return res.status(400).json({ error: 'Company name required' });
 
     const articles = await fetchNews(company);
-    const signals = await extractSignals(articles);
+    const signals = await extractSignals(articles, language, provider);
 
     // Aggregate sentiment by date
     const sentimentByDate = {};

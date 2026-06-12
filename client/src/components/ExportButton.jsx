@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 function ExportButton({ company }) {
+  const { t } = useTranslation();
   const handleExport = async () => {
     const dashboard = document.getElementById('dashboard');
     
@@ -44,7 +46,7 @@ function ExportButton({ company }) {
         onClick={handleExport}
         className="px-5 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-semibold"
       >
-        Export PDF
+        {t('exportButton')}
       </button>
     </div>
   );

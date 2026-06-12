@@ -1,22 +1,26 @@
+import { useTranslation } from 'react-i18next';
+
 const categoryColors = {
   'product launch': 'bg-blue-600',
-  'funding': 'bg-green-600',
-  'partnership': 'bg-purple-600',
-  'regulatory': 'bg-red-600',
-  'executive': 'bg-yellow-600',
-  'other': 'bg-gray-600',
+  'funding':        'bg-green-600',
+  'partnership':    'bg-purple-600',
+  'regulatory':     'bg-red-600',
+  'executive':      'bg-yellow-600',
+  'other':          'bg-gray-600',
 };
 
 function SentimentPill({ value }) {
+  const { t } = useTranslation();
   const color = value > 0.2 ? 'bg-green-600' : value < -0.2 ? 'bg-red-600' : 'bg-gray-600';
-  const label = value > 0.2 ? 'Positive' : value < -0.2 ? 'Negative' : 'Neutral';
+  const label = value > 0.2 ? t('sentimentPositive') : value < -0.2 ? t('sentimentNegative') : t('sentimentNeutral');
   return <span className={`${color} text-xs px-2 py-1 rounded-full`}>{label}</span>;
 }
 
 function EventTimeline({ signals }) {
+  const { t } = useTranslation();
   return (
     <div className="bg-gray-900 rounded-xl p-6">
-      <h2 className="text-xl font-semibold mb-4">News Timeline</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('timelineTitle')}</h2>
       <div className="space-y-4">
         {signals.map((item, i) => (
           <div key={i} className="bg-gray-800 rounded-lg p-4">

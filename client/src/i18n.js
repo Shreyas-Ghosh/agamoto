@@ -24,6 +24,12 @@ const resources = {
       sentimentNeutral:  'Neutral',
       searchButton: 'Search',
       aiProvider: 'AI Provider',
+      reviewsTitle: 'What Our Users Say',
+      addReview: 'Write a Review',
+      namePlaceholder: 'Your Name',
+      ratingLabel: 'Rating:',
+      reviewPlaceholder: 'Share your experience...',
+      submitReview: 'Submit',
     }
   },
   hi: {
@@ -48,6 +54,12 @@ const resources = {
       sentimentNeutral:  'तटस्थ',
       searchButton: 'खोजें',
       aiProvider: 'AI प्रदाता',
+      reviewsTitle: 'हमारे उपयोगकर्ता क्या कहते हैं',
+      addReview: 'एक समीक्षा लिखें',
+      namePlaceholder: 'आपका नाम',
+      ratingLabel: 'रेटिंग:',
+      reviewPlaceholder: 'अपना अनुभव साझा करें...',
+      submitReview: 'जमा करें',
     }
   },
   te: {
@@ -72,6 +84,12 @@ const resources = {
       sentimentNeutral:  'తటస్థ',
       searchButton: 'శోధించు',
       aiProvider: 'AI ప్రొవైడర్',
+      reviewsTitle: 'మా వినియోగదారులు ఏమి చెప్తున్నారు',
+      addReview: 'సమీక్ష రాయండి',
+      namePlaceholder: 'మీ పేరు',
+      ratingLabel: 'రేటింగ్:',
+      reviewPlaceholder: 'మీ అనుభవాన్ని పంచుకోండి...',
+      submitReview: 'సమర్పించండి',
     }
   }
 };

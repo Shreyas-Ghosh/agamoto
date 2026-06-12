@@ -5,6 +5,7 @@ import SentimentChart from './components/SentimentChart';
 import EventTimeline from './components/EventTimeline';
 import SWOTCard from './components/SWOTCard';
 import ExportButton from './components/ExportButton';
+import ReviewSystem from './components/ReviewSystem';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -243,6 +244,9 @@ function App() {
 
         </div>
       )}
+
+      {/* Reviews Section */}
+      <ReviewSystem />
 
     </div>
   );

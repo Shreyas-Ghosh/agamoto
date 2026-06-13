@@ -7,6 +7,73 @@ import SWOTCard from './components/SWOTCard';
 import ExportButton from './components/ExportButton';
 import ReviewSystem from './components/ReviewSystem';
 
+function LoadingSkeleton({ company }) {
+  const { t } = useTranslation();
+  return (
+    <section style={{
+      maxWidth: '900px',
+      margin: '0 auto',
+      padding: '48px',
+    }}>
+      {/* Company name shimmer */}
+      <div className="glass-panel fade-in" style={{ padding: '48px', marginBottom: '32px' }}>
+        <p style={{
+          fontSize: '11px',
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: '#666',
+          marginBottom: '16px',
+        }}>
+          {t('analyzing', { company: '' }).replace('...', '').trim()} — 20–30s
+        </p>
+        <p style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: 'italic',
+          fontSize: 'clamp(32px, 5vw, 56px)',
+          color: '#444',
+          marginBottom: '24px',
+          lineHeight: 1.1,
+        }}>
+          {company}
+        </p>
+        {/* Shimmer bars */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="shimmer" style={{ height: '14px', width: '80%' }} />
+          <div className="shimmer" style={{ height: '14px', width: '60%' }} />
+          <div className="shimmer" style={{ height: '14px', width: '70%' }} />
+        </div>
+      </div>
+
+      {/* Chart shimmer */}
+      <div className="glass-panel fade-in fade-in-delay-1" style={{ padding: '48px', marginBottom: '32px' }}>
+        <div className="shimmer" style={{ height: '12px', width: '120px', marginBottom: '24px' }} />
+        <div className="shimmer" style={{ height: '200px', width: '100%' }} />
+      </div>
+
+      {/* Grid shimmer */}
+      <div className="dashboard-grid fade-in fade-in-delay-2">
+        <div className="glass-panel" style={{ padding: '32px' }}>
+          <div className="shimmer" style={{ height: '12px', width: '100px', marginBottom: '20px' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="shimmer" style={{ height: '80px' }} />
+            <div className="shimmer" style={{ height: '80px' }} />
+            <div className="shimmer" style={{ height: '80px' }} />
+            <div className="shimmer" style={{ height: '80px' }} />
+          </div>
+        </div>
+        <div className="glass-panel" style={{ padding: '32px' }}>
+          <div className="shimmer" style={{ height: '12px', width: '100px', marginBottom: '20px' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="shimmer" style={{ height: '60px' }} />
+            <div className="shimmer" style={{ height: '60px' }} />
+            <div className="shimmer" style={{ height: '60px' }} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState(null);
@@ -43,6 +110,8 @@ function App() {
         <div className="bubble"></div>
         <div className="bubble"></div>
         <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
       </div>
 
       {/* Navbar */}
@@ -72,7 +141,7 @@ function App() {
         </span>
 
         {/* Controls */}
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+        <div className="navbar-controls" style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
           
           {/* Provider Toggle */}
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
@@ -80,6 +149,7 @@ function App() {
             {['groq', 'ollama'].map((p) => (
               <button
                 key={p}
+                id={`provider-${p}`}
                 onClick={() => setProvider(p)}
                 style={{
                   padding: '4px 10px',
@@ -107,6 +177,7 @@ function App() {
             {['en', 'hi', 'te'].map((code) => (
               <button
                 key={code}
+                id={`lang-${code}`}
                 onClick={() => i18n.changeLanguage(code)}
                 style={{
                   padding: '4px 14px',
@@ -130,7 +201,7 @@ function App() {
       </header>
 
       {/* Hero search area */}
-      <section style={{
+      <section className="hero-section" style={{
         borderBottom: '1px solid var(--glass-border)',
         padding: '80px 48px 64px',
         maxWidth: '900px',
@@ -155,35 +226,15 @@ function App() {
         </div>
       )}
 
-      {/* Loading */}
-      {loading && (
-        <section style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          padding: '80px 48px',
-          borderBottom: '1px solid var(--glass-border)',
-        }}>
-          <p style={{
-            fontFamily: "'Playfair Display', serif",
-            fontStyle: 'italic',
-            fontSize: '32px',
-            color: '#444',
-            marginBottom: '16px',
-          }}>
-            {company}
-          </p>
-          <p style={{ fontSize: '13px', color: '#555', letterSpacing: '0.06em' }}>
-            {t('analyzing', { company: '' }).replace('...', '').trim()} — 20–30s
-          </p>
-        </section>
-      )}
+      {/* Loading Skeleton */}
+      {loading && <LoadingSkeleton company={company} />}
 
       {/* Dashboard */}
       {data && (
         <div id="dashboard">
 
           {/* Company headline */}
-          <section className="glass-panel" style={{
+          <section className="glass-panel fade-in" style={{
             maxWidth: '900px',
             margin: '32px auto 0',
             padding: '48px',
@@ -213,7 +264,7 @@ function App() {
           </section>
 
           {/* Sentiment chart */}
-          <section className="glass-panel" style={{
+          <section className="glass-panel fade-in fade-in-delay-1" style={{
             maxWidth: '900px',
             margin: '32px auto 0',
             padding: '48px',
@@ -231,12 +282,9 @@ function App() {
           </section>
 
           {/* SWOT + Timeline */}
-          <section style={{
+          <section className="dashboard-grid fade-in fade-in-delay-2" style={{
             maxWidth: '900px',
             margin: '32px auto 96px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '32px',
           }}>
             <SWOTCard swot={data.swot} />
             <EventTimeline signals={data.signals} />

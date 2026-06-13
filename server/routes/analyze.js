@@ -4,10 +4,40 @@ import { extractSignals } from '../services/groqService.js';
 
 const router = express.Router();
 
+// In-memory cache with 5-minute TTL
+const cache = new Map();
+const CACHE_TTL = 5 * 60 * 1000;
+
+function getCacheKey(company, language, provider) {
+  return `${company.toLowerCase().trim()}:${language}:${provider}`;
+}
+
+function getCached(key) {
+  const entry = cache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL) {
+    cache.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
 router.post('/analyze', async (req, res) => {
   try {
-    const { company, language = 'en', provider = 'groq' } = req.body;
-    if (!company) return res.status(400).json({ error: 'Company name required' });
+    let { company, language = 'en', provider = 'groq' } = req.body;
+    if (!company || typeof company !== 'string') {
+      return res.status(400).json({ error: 'Company name required' });
+    }
+
+    // Sanitize input
+    company = company.trim().slice(0, 100);
+
+    // Check cache
+    const cacheKey = getCacheKey(company, language, provider);
+    const cached = getCached(cacheKey);
+    if (cached) {
+      return res.json({ ...cached, cached: true });
+    }
 
     const articles = await fetchNews(company);
     const signals = await extractSignals(articles, language, provider);
@@ -32,7 +62,12 @@ router.post('/analyze', async (req, res) => {
       if (s?.threat) swot.threats.push(s.threat);
     });
 
-    res.json({ signals, sentimentChart, swot });
+    const result = { signals, sentimentChart, swot, articleCount: articles.length };
+
+    // Store in cache
+    cache.set(cacheKey, { data: result, timestamp: Date.now() });
+
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Analysis failed' });

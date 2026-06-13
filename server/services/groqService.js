@@ -42,7 +42,7 @@ export async function extractSignals(articles, language = 'en', provider = 'groq
 
       if (provider === 'ollama') {
         const res = await axios.post('http://localhost:11434/api/chat', {
-          model: 'llama3.2',
+          model: 'qwen3:8b',
           messages: [
             { role: 'system', content: systemMessage(language) },
             { role: 'user', content: prompt(article.bodyText, language) }
@@ -54,7 +54,7 @@ export async function extractSignals(articles, language = 'en', provider = 'groq
       } else {
         const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
         const completion = await groq.chat.completions.create({
-          model: 'llama-3.3-70b-versatile',
+          model: 'llama-3.1-8b-instant',
           messages: [
             { role: 'system', content: systemMessage(language) },
             { role: 'user', content: prompt(article.bodyText, language) }

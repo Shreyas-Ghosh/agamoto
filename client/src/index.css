@@ -5,6 +5,7 @@
   --bubble-blue: rgba(56, 114, 255, 0.15);
   --bubble-purple: rgba(138, 43, 226, 0.15);
   --bubble-yellow: rgba(255, 215, 0, 0.1);
+  --bubble-indigo: rgba(99, 102, 241, 0.1);
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
 }
@@ -64,6 +65,23 @@ body {
   animation-delay: -5s;
 }
 
+.bubble:nth-child(4) {
+  width: 350px; height: 350px;
+  background: var(--bubble-indigo);
+  top: 70%; left: 20%;
+  animation-duration: 22s;
+  animation-delay: -8s;
+}
+
+.bubble:nth-child(5) {
+  width: 250px; height: 250px;
+  background: var(--bubble-purple);
+  top: 10%; right: 20%;
+  animation-duration: 28s;
+  animation-delay: -12s;
+  opacity: 0.7;
+}
+
 @keyframes float {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -50px) scale(1.1); }
@@ -77,4 +95,77 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.fade-in-delay-1 { animation-delay: 0.1s; }
+.fade-in-delay-2 { animation-delay: 0.2s; }
+.fade-in-delay-3 { animation-delay: 0.3s; }
+
+/* Loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 8px;
+}
+
+/* Responsive grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar-controls {
+    gap: 12px !important;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .section-padding {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .hero-section {
+    padding: 48px 20px 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-controls {
+    gap: 8px !important;
+  }
 }

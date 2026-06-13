@@ -1,49 +1,117 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const categoryColors = {
-  'product launch': 'bg-blue-600',
-  'funding':        'bg-green-600',
-  'partnership':    'bg-purple-600',
-  'regulatory':     'bg-red-600',
-  'executive':      'bg-yellow-600',
-  'other':          'bg-gray-600',
+const CATEGORY_COLORS = {
+  'product launch': '#3b82f6',
+  'funding':        '#22c55e',
+  'partnership':    '#a855f7',
+  'regulatory':     '#ef4444',
+  'executive':      '#eab308',
+  'other':          '#6b7280',
 };
+
+function Pill({ label, bgColor }) {
+  return (
+    <span style={{
+      background: bgColor,
+      fontSize: '11px',
+      padding: '3px 10px',
+      borderRadius: '999px',
+      fontWeight: 500,
+      letterSpacing: '0.02em',
+      whiteSpace: 'nowrap',
+    }}>
+      {label}
+    </span>
+  );
+}
 
 function SentimentPill({ value }) {
   const { t } = useTranslation();
-  const color = value > 0.2 ? 'bg-green-600' : value < -0.2 ? 'bg-red-600' : 'bg-gray-600';
+  const color = value > 0.2 ? '#22c55e' : value < -0.2 ? '#ef4444' : '#6b7280';
   const label = value > 0.2 ? t('sentimentPositive') : value < -0.2 ? t('sentimentNegative') : t('sentimentNeutral');
-  return <span className={`${color} text-xs px-2 py-1 rounded-full`}>{label}</span>;
+  return <Pill label={label} bgColor={color} />;
+}
+
+function TimelineCard({ item }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div style={{
+      background: 'rgba(255, 255, 255, 0.03)',
+      borderRadius: '12px',
+      padding: '20px',
+      transition: 'background 0.2s',
+      ...(hovered ? { background: 'rgba(255, 255, 255, 0.06)' } : {}),
+    }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Pills row */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
+        <Pill
+          label={item.category}
+          bgColor={CATEGORY_COLORS[item.category] || CATEGORY_COLORS.other}
+        />
+        <SentimentPill value={item.sentiment} />
+        <span style={{ color: '#666', fontSize: '11px', letterSpacing: '0.04em' }}>{item.date}</span>
+      </div>
+
+      {/* Title link */}
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          fontWeight: 600,
+          fontSize: '14px',
+          color: '#fff',
+          textDecoration: 'none',
+          lineHeight: 1.4,
+          display: 'block',
+          transition: 'color 0.2s',
+        }}
+        onMouseEnter={e => e.target.style.color = '#818cf8'}
+        onMouseLeave={e => e.target.style.color = '#fff'}
+      >
+        {item.title}
+      </a>
+
+      {/* Summary */}
+      <p style={{ color: '#888', fontSize: '13px', marginTop: '6px', lineHeight: 1.5 }}>
+        {item.summary}
+      </p>
+
+      {/* Key signals */}
+      {item.key_signals?.length > 0 && (
+        <ul style={{ listStyle: 'none', padding: 0, marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {item.key_signals.map((s, j) => (
+            <li key={j} style={{ fontSize: '12px', color: '#666' }}>
+              → {s}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 function EventTimeline({ signals }) {
   const { t } = useTranslation();
   return (
-    <div className="bg-gray-900 rounded-xl p-6">
-      <h2 className="text-xl font-semibold mb-4">{t('timelineTitle')}</h2>
-      <div className="space-y-4">
+    <div className="glass-panel" style={{ padding: '32px' }}>
+      <p style={{
+        fontSize: '11px',
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        color: '#aaa',
+        marginBottom: '24px',
+      }}>
+        {t('timelineTitle')}
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {signals.map((item, i) => (
-          <div key={i} className="bg-gray-800 rounded-lg p-4">
-            <div className="flex flex-wrap gap-2 mb-2">
-              <span className={`${categoryColors[item.category] || 'bg-gray-600'} text-xs px-2 py-1 rounded-full`}>
-                {item.category}
-              </span>
-              <SentimentPill value={item.sentiment} />
-              <span className="text-gray-400 text-xs py-1">{item.date}</span>
-            </div>
-            <a href={item.url} target="_blank" rel="noreferrer"
-              className="font-semibold text-white hover:text-blue-400">
-              {item.title}
-            </a>
-            <p className="text-gray-400 text-sm mt-1">{item.summary}</p>
-            {item.key_signals?.length > 0 && (
-              <ul className="mt-2 space-y-1">
-                {item.key_signals.map((s, j) => (
-                  <li key={j} className="text-xs text-gray-500">→ {s}</li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <TimelineCard key={i} item={item} />
         ))}
       </div>
     </div>
